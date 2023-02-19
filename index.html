@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <p id="name"></p>
+    <p id="city"></p>
+    <p id="phone"></p>
+    <p id="age"></p>
+    <button id="hien">Hiện</button>
+    <div id="an" style="display: none;">Đã hiện lên </div>
+    <script>
+        var theP = document.getElementById('name');
+        var theP2 = document.getElementById('city');
+        var theP3 = document.getElementById('phone');
+        var theP4 = document.getElementById('age');
+        alert("Chào mừng bạn đến với ứng dụng JavaScript đầu tiên");
+        var ten = prompt("Yêu cầu nhập tên");
+        theP.innerHTML = ('Chào mừng bạn đến với trang web của tôi, ' + ten);
+        var tuoi = prompt('Yêu cầu nhập thành phố đang sống');
+        theP2.innerHTML = ('Thành phố: ' + tuoi);
+        var sdt = prompt('Yêu cầu nhập số điện thoại');
+        theP3.innerHTML = ('Số điện thoại: ' + sdt);
+        var now = new Date().getFullYear();
+        var nhaptuoi = true
+        while (nhaptuoi) {
+            var now = new Date().getFullYear();
+            var namsinh = prompt('Yêu cầu nhập năm sinh')
+            if (now < namsinh) {
+                theP4.innerHTML = 'Vui lòng nhập chính xác năm sinh'
+            } else {
+                theP4.innerHTML = 'Số tuổi: ' + (now - namsinh);
+                nhaptuoi=false
+            }
+        }
+        var thediv=document.getElementById('an')
+        document.getElementById('hien').onclick= hienAn
+        function hienAn(){
+            thediv.style = "display:block"
+        }
+    </script>
+</body>
+
+</html>

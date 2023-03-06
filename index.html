@@ -6,44 +6,117 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="index.css">
 </head>
 
 <body>
-    <p id="name"></p>
-    <p id="city"></p>
-    <p id="phone"></p>
-    <p id="age"></p>
-    <button id="hien">Hiện</button>
-    <div id="an" style="display: none;">Đã hiện lên </div>
+    <p>Tên</p><input type="text" id="ten">
+    <p>DOB</p><input type="text" id="ngaysinh">
+    <p>Điểm Toán</p><input type="text" id="diemtoan">
+    <p>Điểm Lý</p><input type="text" id="diemly">
+    <p>Điểm Hóa</p><input type="text" id="diemhoa">
+    <div>
+        <button id="Nhap">Nhập</button>
+        <button id="tinhdiemtrungbinh">Tính điểm trung bình</button>
+        <button id="xacdinhhocluc">Xác định học lực</button>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Họ và tên</th>
+                <th>Ngày sinh</th>
+                <th>Điểm toán</th>
+                <th>Điểm lý</th>
+                <th>Điểm hóa</th>
+                <th>Điểm trung bình</th>
+                <th>Học lực</th>
+            </tr>
+        </thead>
+        <tbody id="tbody">
+
+        </tbody>
+    </table>
     <script>
-        var theP = document.getElementById('name');
-        var theP2 = document.getElementById('city');
-        var theP3 = document.getElementById('phone');
-        var theP4 = document.getElementById('age');
-        alert("Chào mừng bạn đến với ứng dụng JavaScript đầu tiên");
-        var ten = prompt("Yêu cầu nhập tên");
-        theP.innerHTML = ('Chào mừng bạn đến với trang web của tôi, ' + ten);
-        var tuoi = prompt('Yêu cầu nhập thành phố đang sống');
-        theP2.innerHTML = ('Thành phố: ' + tuoi);
-        var sdt = prompt('Yêu cầu nhập số điện thoại');
-        theP3.innerHTML = ('Số điện thoại: ' + sdt);
-        var now = new Date().getFullYear();
-        var nhaptuoi = true
-        while (nhaptuoi) {
-            var now = new Date().getFullYear();
-            var namsinh = prompt('Yêu cầu nhập năm sinh')
-            if (now < namsinh) {
-                theP4.innerHTML = 'Vui lòng nhập chính xác năm sinh'
-            } else {
-                theP4.innerHTML = 'Số tuổi: ' + (now - namsinh);
-                nhaptuoi=false
+         let index = 1;
+        function addRow() {
+             let tbody = document.getElementById("tbody");
+             let tr1 = document.createElement("tr");
+            tbody.append(tr1);
+            tr1.id = index;
+            
+
+             let tdHoTen = document.createElement("td");
+             let tdNgaySinh = document.createElement("td");
+             let tdDiemtoan = document.createElement("td");
+             let tdDiemly = document.createElement("td");
+             let tdDiemhoa = document.createElement("td");
+             let tdDiemtrungbinh = document.createElement("td");
+             let tdHocluc = document.createElement("td");
+
+            tdDiemtoan.id = "toan" + index;
+            tdDiemly.id = "ly" + index;
+            tdDiemhoa.id = "hoa" +index;
+            tdDiemtrungbinh.id = "dtb" +index;
+            tdHocluc.id = "hl" +index;
+
+            index = index+1;
+
+            tr1.append(tdHoTen);
+            tr1.append(tdNgaySinh);
+            tr1.append(tdDiemtoan);
+            tr1.append(tdDiemly);
+            tr1.append(tdDiemhoa);
+            tr1.append(tdDiemtrungbinh);
+            tr1.append(tdHocluc);
+
+
+             let nhapten = document.getElementById("ten");
+             let nhapngaysinh = document.getElementById("ngaysinh");
+             let nhapdiemtoan = document.getElementById("diemtoan");
+             let nhapdiemly = document.getElementById("diemly");
+             let nhapdiemhoa = document.getElementById("diemhoa");
+
+            tdHoTen.innerHTML = nhapten.value;
+            tdNgaySinh.innerHTML = ngaysinh.value;
+            tdDiemtoan.innerHTML = diemtoan.value;
+            tdDiemly.innerHTML = diemly.value;
+            tdDiemhoa.innerHTML = diemhoa.value;
+        };
+         let nhap = document.getElementById("Nhap");
+        nhap.onclick = addRow;
+
+
+         let Diemtb = document.getElementById("tinhdiemtrungbinh")
+        Diemtb.onclick = DiemTRUNGBINH
+        function DiemTRUNGBINH() {
+            for ( let i=1; i < index ; i++) {
+                 let dtoan = document.getElementById("toan" + i)
+                 let dly = document.getElementById("ly"+ i)
+                 let dhoa = document.getElementById("hoa" + i)
+                 let dtrungbinh = document.getElementById("dtb" + i)
+
+                dtrungbinh.innerHTML = (dtoan.innerHTML -(-dly.innerHTML) -(-dhoa.innerHTML))/3
+            }
+
+        }
+        
+
+         let xdhl = document.getElementById("xacdinhhocluc")
+        xdhl.onclick = hocluc 
+        function hocluc() {
+             let dtrungbinh = document.getElementById("dtb" + i)
+             let hluc = document.getElementById("hl" +i)
+            if(dtrungbinh.innerHTML>=8){
+                hluc.innerHTML = "Giỏi"
+            } else if(6<=dtrungbinh.innerHTML && dtrungbinh.innerHTML<8){
+                hluc.innerHTML = "Khá"
+            }else if(3<dtrungbinh.innerHTML && dtrungbinh.innerHTML<6){
+                hluc.innerHTML = "Trung Bình"
+            }else{
+                hluc.innerHTML = "Yếu"
             }
         }
-        var thediv=document.getElementById('an')
-        document.getElementById('hien').onclick= hienAn
-        function hienAn(){
-            thediv.style = "display:block"
-        }
+
     </script>
 </body>
 

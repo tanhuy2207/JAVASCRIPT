@@ -104,6 +104,7 @@
          let xdhl = document.getElementById("xacdinhhocluc")
         xdhl.onclick = hocluc 
         function hocluc() {
+            for ( let i=1; i < index ; i++) {
              let dtrungbinh = document.getElementById("dtb" + i)
              let hluc = document.getElementById("hl" +i)
             if(dtrungbinh.innerHTML>=8){
@@ -116,7 +117,7 @@
                 hluc.innerHTML = "Yếu"
             }
         }
-
+    }
     </script>
 </body>
 

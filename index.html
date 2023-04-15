@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="index.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 </head>
 
 <body>
@@ -37,87 +38,70 @@
         </tbody>
     </table>
     <script>
-         let index = 1;
-        function addRow() {
-             let tbody = document.getElementById("tbody");
-             let tr1 = document.createElement("tr");
-            tbody.append(tr1);
-            tr1.id = index;
-            
+        $(document).ready(function () {
+            let index = 1;
+            $('#Nhap').click(function () {
+                let nhapten = $('#ten').val();
+                let nhapngaysinh = $('#ngaysinh').val();
+                let nhapdiemtoan = $('#diemtoan').val();
+                let nhapdiemly = $('#diemly').val();
+                let nhapdiemhoa = $('#diemhoa').val();
+                let tr1 = $('<tr>');
+                tr1.attr('id', index);
 
-             let tdHoTen = document.createElement("td");
-             let tdNgaySinh = document.createElement("td");
-             let tdDiemtoan = document.createElement("td");
-             let tdDiemly = document.createElement("td");
-             let tdDiemhoa = document.createElement("td");
-             let tdDiemtrungbinh = document.createElement("td");
-             let tdHocluc = document.createElement("td");
+                let tdHoTen = $('<td>').text(nhapten);
+                let tdNgaySinh = $('<td>').text(nhapngaysinh);
+                let tdDiemtoan = $('<td>').text(nhapdiemtoan);
+                let tdDiemly = $('<td>').text(nhapdiemly);
+                let tdDiemhoa = $('<td>').text(nhapdiemhoa);
+                let tdDiemtrungbinh = $('<td>');
+                let tdHocluc = $('<td>');
 
-            tdDiemtoan.id = "toan" + index;
-            tdDiemly.id = "ly" + index;
-            tdDiemhoa.id = "hoa" +index;
-            tdDiemtrungbinh.id = "dtb" +index;
-            tdHocluc.id = "hl" +index;
+                tdDiemtoan.attr('id', 'toan' + index);
+                tdDiemly.attr('id', 'ly' + index);
+                tdDiemhoa.attr('id', 'hoa' + index);
+                tdDiemtrungbinh.attr('id', 'dtb' + index);
+                tdHocluc.attr('id', 'hl' + index);
 
-            index = index+1;
+                tr1.append(tdHoTen);
+                tr1.append(tdNgaySinh);
+                tr1.append(tdDiemtoan);
+                tr1.append(tdDiemly);
+                tr1.append(tdDiemhoa);
+                tr1.append(tdDiemtrungbinh);
+                tr1.append(tdHocluc);
 
-            tr1.append(tdHoTen);
-            tr1.append(tdNgaySinh);
-            tr1.append(tdDiemtoan);
-            tr1.append(tdDiemly);
-            tr1.append(tdDiemhoa);
-            tr1.append(tdDiemtrungbinh);
-            tr1.append(tdHocluc);
+                $('#tbody').append(tr1);
 
+                index++;
+            });
+            $('#tinhdiemtrungbinh').click(function () {
+                for (let i = 1; i < index; i++) {
+                    let dtoan = $('#toan' + i);
+                    let dly = $('#ly' + i);
+                    let dhoa = $('#hoa' + i);
+                    let dtrungbinh = $('#dtb' + i);
 
-             let nhapten = document.getElementById("ten");
-             let nhapngaysinh = document.getElementById("ngaysinh");
-             let nhapdiemtoan = document.getElementById("diemtoan");
-             let nhapdiemly = document.getElementById("diemly");
-             let nhapdiemhoa = document.getElementById("diemhoa");
+                    dtrungbinh.html((dtoan.html() - (-dly.html()) - (-dhoa.html())) / 3);
+                }
+            });
 
-            tdHoTen.innerHTML = nhapten.value;
-            tdNgaySinh.innerHTML = ngaysinh.value;
-            tdDiemtoan.innerHTML = diemtoan.value;
-            tdDiemly.innerHTML = diemly.value;
-            tdDiemhoa.innerHTML = diemhoa.value;
-        };
-         let nhap = document.getElementById("Nhap");
-        nhap.onclick = addRow;
-
-
-         let Diemtb = document.getElementById("tinhdiemtrungbinh")
-        Diemtb.onclick = DiemTRUNGBINH
-        function DiemTRUNGBINH() {
-            for ( let i=1; i < index ; i++) {
-                 let dtoan = document.getElementById("toan" + i)
-                 let dly = document.getElementById("ly"+ i)
-                 let dhoa = document.getElementById("hoa" + i)
-                 let dtrungbinh = document.getElementById("dtb" + i)
-
-                dtrungbinh.innerHTML = (dtoan.innerHTML -(-dly.innerHTML) -(-dhoa.innerHTML))/3
-            }
-
-        }
-        
-
-         let xdhl = document.getElementById("xacdinhhocluc")
-        xdhl.onclick = hocluc 
-        function hocluc() {
-            for ( let i=1; i < index ; i++) {
-             let dtrungbinh = document.getElementById("dtb" + i)
-             let hluc = document.getElementById("hl" +i)
-            if(dtrungbinh.innerHTML>=8){
-                hluc.innerHTML = "Giỏi"
-            } else if(6<=dtrungbinh.innerHTML && dtrungbinh.innerHTML<8){
-                hluc.innerHTML = "Khá"
-            }else if(3<dtrungbinh.innerHTML && dtrungbinh.innerHTML<6){
-                hluc.innerHTML = "Trung Bình"
-            }else{
-                hluc.innerHTML = "Yếu"
-            }
-        }
-    }
+            $('#xacdinhhocluc').click(function () {
+                for (let i = 1; i < index; i++) {
+                    let dtrungbinh = $('#dtb' + i);
+                    let hluc = $('#hl' + i);
+                    if (dtrungbinh.html() >= 8) {
+                        hluc.html('Giỏi');
+                    } else if (6 <= dtrungbinh.html() && dtrungbinh.html() < 8) {
+                        hluc.html('Khá');
+                    } else if (3 < dtrungbinh.html() && dtrungbinh.html() < 6) {
+                        hluc.html('Trung Bình');
+                    } else {
+                        hluc.html('Yếu');
+                    }
+                }
+            });
+        });   
     </script>
 </body>
 

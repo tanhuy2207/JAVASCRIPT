@@ -6,102 +6,79 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="index.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 </head>
 
 <body>
-    <p>Tên</p><input type="text" id="ten">
-    <p>DOB</p><input type="text" id="ngaysinh">
-    <p>Điểm Toán</p><input type="text" id="diemtoan">
-    <p>Điểm Lý</p><input type="text" id="diemly">
-    <p>Điểm Hóa</p><input type="text" id="diemhoa">
-    <div>
-        <button id="Nhap">Nhập</button>
-        <button id="tinhdiemtrungbinh">Tính điểm trung bình</button>
-        <button id="xacdinhhocluc">Xác định học lực</button>
-    </div>
-    <table>
-        <thead>
-            <tr>
-                <th>Họ và tên</th>
-                <th>Ngày sinh</th>
-                <th>Điểm toán</th>
-                <th>Điểm lý</th>
-                <th>Điểm hóa</th>
-                <th>Điểm trung bình</th>
-                <th>Học lực</th>
-            </tr>
-        </thead>
-        <tbody id="tbody">
+    <h1>Danh sách nhân viên</h1>
+    <div class="employee-list"></div>
 
-        </tbody>
-    </table>
+    <main id="main"></main>
     <script>
-        $(document).ready(function () {
-            let index = 1;
-            $('#Nhap').click(function () {
-                let nhapten = $('#ten').val();
-                let nhapngaysinh = $('#ngaysinh').val();
-                let nhapdiemtoan = $('#diemtoan').val();
-                let nhapdiemly = $('#diemly').val();
-                let nhapdiemhoa = $('#diemhoa').val();
-                let tr1 = $('<tr>');
-                tr1.attr('id', index);
-
-                let tdHoTen = $('<td>').text(nhapten);
-                let tdNgaySinh = $('<td>').text(nhapngaysinh);
-                let tdDiemtoan = $('<td>').text(nhapdiemtoan);
-                let tdDiemly = $('<td>').text(nhapdiemly);
-                let tdDiemhoa = $('<td>').text(nhapdiemhoa);
-                let tdDiemtrungbinh = $('<td>');
-                let tdHocluc = $('<td>');
-
-                tdDiemtoan.attr('id', 'toan' + index);
-                tdDiemly.attr('id', 'ly' + index);
-                tdDiemhoa.attr('id', 'hoa' + index);
-                tdDiemtrungbinh.attr('id', 'dtb' + index);
-                tdHocluc.attr('id', 'hl' + index);
-
-                tr1.append(tdHoTen);
-                tr1.append(tdNgaySinh);
-                tr1.append(tdDiemtoan);
-                tr1.append(tdDiemly);
-                tr1.append(tdDiemhoa);
-                tr1.append(tdDiemtrungbinh);
-                tr1.append(tdHocluc);
-
-                $('#tbody').append(tr1);
-
-                index++;
-            });
-            $('#tinhdiemtrungbinh').click(function () {
-                for (let i = 1; i < index; i++) {
-                    let dtoan = $('#toan' + i);
-                    let dly = $('#ly' + i);
-                    let dhoa = $('#hoa' + i);
-                    let dtrungbinh = $('#dtb' + i);
-
-                    dtrungbinh.html((dtoan.html() - (-dly.html()) - (-dhoa.html())) / 3);
-                }
+        // Lấy danh sách nhân viên
+        fetch("http://localhost:8080/staffs")
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (staffs) {
+                staffs.forEach((element) => {
+                    let div = document.createElement("div");
+                    let p = document.createElement("p");
+                    let image = document.createElement("img");
+                    document.getElementById("main").append(div);
+                    div.id = element.id;
+                    div.append(p);
+                    div.append(image);
+                    p.innerHTML = element.name;
+                    image.setAttribute("src", element.image);
+                    div.onclick = showEmployeeDetails;
+                });
+            })
+            .catch((error) => {
+                alert(error);
             });
 
-            $('#xacdinhhocluc').click(function () {
-                for (let i = 1; i < index; i++) {
-                    let dtrungbinh = $('#dtb' + i);
-                    let hluc = $('#hl' + i);
-                    if (dtrungbinh.html() >= 8) {
-                        hluc.html('Giỏi');
-                    } else if (6 <= dtrungbinh.html() && dtrungbinh.html() < 8) {
-                        hluc.html('Khá');
-                    } else if (3 < dtrungbinh.html() && dtrungbinh.html() < 6) {
-                        hluc.html('Trung Bình');
-                    } else {
-                        hluc.html('Yếu');
-                    }
-                }
+        // Hiển thị thông tin chi tiết của nhân viên
+        function showEmployeeDetails(event) {
+            let employeeId = this.id;
+
+            fetch(`http://localhost:8080/staffs/${employeeId}`)
+                .then(function (response) {
+                    return response.json();
+                })
+                .then(function (employee) {
+                    let name = document.getElementById("ten");
+                    let ngaysinh = new Date(employee.doB);
+                    let ngayvao = new Date(employee.startDate);
+
+                    name.innerHTML = "Họ và tên: " + employee.name;
+                    document.getElementById("dob").innerHTML = "Ngày sinh: " + ngaysinh.toLocaleDateString();
+                    document.getElementById("ngayvao").innerHTML = "Ngày vào: " + ngayvao.toLocaleDateString();
+
+                    fetch(`http://localhost:8080/departments/${employee.departmentId}`)
+                        .then(function (response) {
+                            return response.json();
+                        })
+                        .then(function (department) {
+                            document.getElementById("phongban").innerHTML = "Phòng ban: " + department.name;
+                            document.getElementById("ngaynghi").innerHTML = "Số ngày nghỉ còn lại: " + employee.annualLeave;
+                            document.getElementById("lamthem").innerHTML = "Số ngày đã làm thêm: " + employee.overTime;
+                        });
+                });
+        }
+
+        // Xóa một nhân viên
+        fetch("http://localhost:8080/staffs/18", {
+            method: "DELETE",
+        })
+            .then((response) => {
+                console.log(response)
+            })
+            .catch((error) => {
+                console.log(error);
             });
-        });   
     </script>
 </body>
 

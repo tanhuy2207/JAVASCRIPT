@@ -1,7 +1,13 @@
-table, th, td{
-    border: 1px solid;
+main > div > img {
+    width: 80%;
 }
-table{
-    width: 100%;
-    border-collapse: collapse;
+main{
+    display: grid;
+    grid-template-columns: 16.666666667% 16.666666667% 16.666666667% 16.666666667%  16.666666667% 16.666666667%;
+    text-align: center;
+}
+main > div{
+    border: 1px solid;
+    border-radius: 20px;
+    margin: 10px ;
 }
